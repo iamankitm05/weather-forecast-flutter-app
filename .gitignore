@@ -1,3 +1,8 @@
+# My stuff
+.env
+*.env
+.vscode
+
 # Miscellaneous
 *.class
 *.log
