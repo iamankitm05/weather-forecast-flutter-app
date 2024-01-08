@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_forecast_app/services/weather/weather_bloc.dart';
 import 'package:weather_forecast_app/services/weather/weather_event.dart';
 import 'package:weather_forecast_app/services/weather/weather_state.dart';
+import 'package:weather_forecast_app/widgets/weather_report.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,8 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
               'Weather forecast',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
-                fontSize: 26,
-                fontWeight: FontWeight.w600,
+                fontSize: 35,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -63,9 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: () {
-              if(_weatherSearchController.text.isNotEmpty) {
+              if (_weatherSearchController.text.isNotEmpty) {
                 context.read<WeatherBloc>().add(FetchingWeatherEvent(
-                  cityName: _weatherSearchController.text));
+                    cityName: _weatherSearchController.text));
               }
             },
             style: ElevatedButton.styleFrom(
@@ -82,84 +82,12 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
             if (state is FetchedWeatherState) {
-              final weather = state.weather;
-              return Table(
-                border: TableBorder.all(color: Colors.white),
-                defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
-                children: [
-                  _buildWeatherDataView(
-                    label: 'City Name',
-                    value: weather.name,
-                    iconData: Icons.cloud,
-                  ),
-                  _buildWeatherDataView(
-                    label: 'Weather',
-                    value: '',
-                  ),
-                  _buildWeatherDataView(
-                    label: 'id',
-                    value: weather.weather[0].id.toString(),
-                  ),
-                  _buildWeatherDataView(
-                    label: 'main',
-                    value: weather.weather[0].main.toString(),
-                  ),
-                  _buildWeatherDataView(
-                    label: 'Coord',
-                    value: '',
-                  ),
-                  _buildWeatherDataView(
-                    label: 'lat',
-                    value: weather.coord.lat.toString(),
-                  ),
-                  _buildWeatherDataView(
-                    label: 'lon',
-                    value: weather.coord.lon.toString(),
-                  ),
-                ],
-              );
+              return WeatherReport(weather: state.weather);
             }
             return const SizedBox();
           }),
         ],
       ),
-    );
-  }
-
-  TableRow _buildWeatherDataView({
-    required String label,
-    required String value,
-    IconData? iconData,
-  }) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(6),
-          child: Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Text(
-          value,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        iconData != null
-            ? Icon(
-                iconData,
-                color: Colors.white,
-              )
-            : const SizedBox(),
-      ],
     );
   }
 }
