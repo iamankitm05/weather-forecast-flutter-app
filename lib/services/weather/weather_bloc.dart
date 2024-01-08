@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_forecast_app/models/weather.dart';
 import 'package:weather_forecast_app/services/weather/weather_event.dart';
 import 'package:weather_forecast_app/services/weather/weather_state.dart';
@@ -15,7 +14,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     Emitter<WeatherState> emit,
   ) async {
     final cityName = event.cityName;
-    final apiKey = dotenv.env['OPENWEATHER_API_KEY'];
+    const apiKey = '1fe9970268f1b823a27bbfcda0a967cd';
     emit(const LoadingWeatherState());
     try {
       // 'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apiKey'
